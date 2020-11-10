@@ -10,14 +10,13 @@ if __name__ == "__main__":
     objects = server.get_objects_node()
     myobj = objects.add_object(ns, "Object")
     myvar = myobj.add_variable(ns, "Variable", 0.0)
+    myvar.set_writable()
 
     server.start()
     
-    count = 0
     while True:
+        value = myvar.get_value()
+        print("{0:.1f} units".format(value))
         time.sleep(1)
-        count += 0.1
-        print("{:8.1f} units".format(count))
-        myvar.set_value(count)
 
     server.stop()

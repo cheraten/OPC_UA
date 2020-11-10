@@ -8,9 +8,11 @@ if __name__ == "__main__":
     client.connect()
     var = client.get_node("ns=2;i=2")
 
+    count = 0
     while True:
-        value = var.get_value()
-        print("{0:.1f} units".format(value))
         time.sleep(1)
+        count += 0.1
+        print("{:8.1f} units".format(count))
+        var.set_value(count)
 
     client.disconnect()
