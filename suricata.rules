@@ -1,0 +1,32 @@
+# simple_hel 
+# 
+alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "HELLO opcua packet (from client)"; content: "HEL"; offset: 0;depth: 3; ) 
+
+# simple_ack 
+# 
+alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "ACK opcua packet (from server)"; content: "ACK"; startswith; ) 
+
+# simple_opn 
+# 
+alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "OPN opcua packet"; content: "OPN"; offset: 0; depth: 3; ) 
+
+# create_session_request 
+# 
+alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "CreateSessionRequest by opcua client"; content: "|cd 01|"; offset: 26;depth: 28; rawbytes; ) 
+
+# ns_i 
+# 
+alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "connect to ns=2,i=2"; content: "|02 00|"; content: "|02 00 00 00|"; distance: 0; within: 4; rawbytes; ) 
+
+# 100bytes_msg 
+# 
+alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "client WriteRequest length is more than 100"; dsize:>100; content: "|a1 02|"; offset: 26; depth: 28; rawbytes; ) 
+
+# verybig_msg 
+# 
+alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "extremely big message (>500)! this is CreateSessionResponse"; dsize:>500; content: "|d0 01|"; offset: 26; depth: 28; rawbytes; ) 
+
+# check_certificate 
+# 
+alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "the subscriber does not have a certificate for opening a secure channel !!"; content: "OPN"; content: "|ff ff ff ff|"; distance: 60; within: 64; rawbytes; )
+
