@@ -15,8 +15,14 @@ if __name__ == "__main__":
     server.start()
     
     while True:
-        value = myvar.get_value()
-        print("{0:.1f} units".format(value))
-        time.sleep(1)
+        try:
+            value = myvar.get_value()
+            print("{0:.1f} units".format(value))
 
+            time.sleep(1)
+        except KeyboardInterrupt:
+            print("Closing connection...")
+            break
+    print()
     server.stop()
+    print("Server stopped")
