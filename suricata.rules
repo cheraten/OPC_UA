@@ -34,7 +34,7 @@ alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "the subscriber does not have a 
 # 
 alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for OPN msg !!"; content: "OPN"; content: "|00 00 00 00|"; distance: 5; within: 9; rawbytes; ) 
 
-# drop_securechannel_forOPNmsg 
+# drop_securechannel_forMSGmsg 
 # 
 drop tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for MSG msg !!"; content: "MSG"; content: "|00 00 00 00|"; distance: 5; within: 9; rawbytes; ) 
 
