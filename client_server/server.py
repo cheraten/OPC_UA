@@ -1,5 +1,7 @@
 import time
 from opcua import ua, Server
+import logging
+logging.basicConfig()
 
 
 if __name__ == "__main__":
