@@ -30,3 +30,31 @@ alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "extremely big message (>500)! t
 # 
 alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "the subscriber does not have a certificate for opening a secure channel !!"; content: "OPN"; content: "|ff ff ff ff|"; distance: 60; within: 64; rawbytes; )
 
+# check_securechannel_forOPNmsg 
+# 
+alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for OPN msg !!"; content: "OPN"; content: "|00 00 00 00|"; distance: 5; within: 9; rawbytes; ) 
+
+# drop_securechannel_forOPNmsg 
+# 
+drop tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for MSG msg !!"; content: "MSG"; content: "|00 00 00 00|"; distance: 5; within: 9; rawbytes; ) 
+
+# check_status_writeresponse 
+# 
+alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "WriteResponse status good (server)"; content: "|a4 02|"; content: "|00 00 00 00|"; distance: 12; within: 16; rawbytes; ) 
+
+# detect_value1.0 
+# 
+alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "written double value is 1.0 (client)"; content: "|a1 02|"; content: "|ff ff ff ff ff ff ef 3f|"; distance: 55; within: 63; rawbytes; ) 
+
+# detect_firstwriterequest 
+# 
+alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "the first WriteRequest"; content: "|04 00 00 00|"; content: "|a1 02|"; distance: 2; within:4; rawbytes; ) 
+
+# check_activatesessionstatus 
+# 
+alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "session activated!"; content: "|d6 01|"; content: "|00 00 00 00|"; distance: 12; within: 16; rawbytes; ) 
+
+# check_byteF 
+# 
+alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "opcua packet with chunk type F"; content: "F"; offset: 3;depth: 1; )
+
