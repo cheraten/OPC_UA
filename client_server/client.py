@@ -10,9 +10,14 @@ if __name__ == "__main__":
 
     count = 0
     while True:
-        time.sleep(1)
-        count += 0.1
-        print("{:8.1f} units".format(count))
-        var.set_value(count)
+        try:
+            time.sleep(1)
+            count += 0.1
+            print("{:8.1f} units".format(count))
+            var.set_value(count)
+        except KeyboardInterrupt:
+            print("Closing connection...")
+            break
 
     client.disconnect()
+    print("Connection closed")
