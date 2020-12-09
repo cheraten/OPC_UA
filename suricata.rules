@@ -12,52 +12,52 @@
 
 # create_session_request 
 # 
-# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "CreateSessionRequest by opcua client"; content: "|cd 01|"; offset: 26;depth: 28; rawbytes; ) 
+# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "CreateSessionRequest by opcua client"; content: "|cd 01|"; offset: 26;depth: 2; rawbytes; ) 
 
 # ns_i 
 # 
 # alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "connect to ns=2,i=2"; content: "|02 00|"; content: "|02 00 00 00|"; distance: 0; within: 4; rawbytes; ) 
-# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "connect to ns=2,i=2"; content: "|02 00 02 00 00 00|"; offset: 67; depth: 75; rawbytes; ) 
+# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "connect to ns=2,i=2"; content: "|02 00 02 00 00 00|"; offset: 67; depth: 8; rawbytes; ) 
 
 # 100bytes_msg 
 # 
-# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "client WriteRequest length is more than 100"; dsize:>100; content: "|a1 02|"; offset: 26; depth: 28; rawbytes; ) 
+# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "client WriteRequest length is more than 100"; dsize:>100; content: "|a1 02|"; offset: 26; depth: 2; rawbytes; ) 
 
 # verybig_msg 
 # 
-# alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "extremely big message (>500)! this is CreateSessionResponse"; dsize:>500; content: "|d0 01|"; offset: 26; depth: 28; rawbytes; ) 
+# alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "extremely big message (>500)! this is CreateSessionResponse"; dsize:>500; content: "|d0 01|"; offset: 26; depth: 2; rawbytes; ) 
 
 # check_certificate 
 # 
-# alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "the subscriber does not have a certificate for opening a secure channel !!"; content: "OPN"; content: "|ff ff ff ff|"; distance: 60; within: 64; rawbytes; )
+# alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "the subscriber does not have a certificate for opening a secure channel !!"; content: "OPN"; content: "|ff ff ff ff|"; distance: 60; within: 4; rawbytes; )
 
 # check_securechannel_forOPNmsg 
 # 
-# alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for OPN msg !!"; content: "OPN"; content: "|00 00 00 00|"; distance: 5; within: 9; rawbytes; ) 
+# alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for OPN msg !!"; content: "OPN"; content: "|00 00 00 00|"; distance: 5; within: 4; rawbytes; ) 
 
 # alert_securechannel_forMSGmsg 
 # 
-# alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for MSG msg !!"; content: "MSG"; content: "|00 00 00 00|"; distance: 5; within: 9; rawbytes; ) 
+# alert tcp 127.0.0.1 4840 <> 127.0.0.1 any (msg: "secure channel not open for MSG msg !!"; content: "MSG"; content: "|00 00 00 00|"; distance: 5; within: 4; rawbytes; ) 
 
 # check_status_writeresponse 
 # 
-# alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "WriteResponse status good (server)"; content: "|a4 02|"; content: "|00 00 00 00|"; distance: 12; within: 16; rawbytes; ) 
+# alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "WriteResponse status good (server)"; content: "|a4 02|"; content: "|00 00 00 00|"; distance: 12; within: 4; rawbytes; ) 
 
 # detect_value1.0 
 # 
-# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "written double value is 1.0 (client)"; content: "|a1 02|"; content: "|ff ff ff ff ff ff ef 3f|"; distance: 55; within: 63; rawbytes; ) 
+# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "written double value is 1.0 (client)"; content: "|a1 02|"; content: "|ff ff ff ff ff ff ef 3f|"; distance: 55; within: 8; rawbytes; ) 
 
 # detect_firstwriterequest 
 # 
-# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "the first WriteRequest"; content: "|04 00 00 00|"; content: "|a1 02|"; distance: 2; within:4; rawbytes; ) 
+# alert tcp 127.0.0.1 any -> 127.0.0.1 4840 (msg: "the first WriteRequest"; content: "|04 00 00 00|"; content: "|a1 02|"; distance: 2; within:2; rawbytes; ) 
 
 # check_activatesessionstatus 
 # 
-# alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "session activated!"; content: "|d6 01|"; content: "|00 00 00 00|"; distance: 12; within: 16; rawbytes; ) 
+# alert tcp 127.0.0.1 4840 -> 127.0.0.1 any (msg: "session activated!"; content: "|d6 01|"; content: "|00 00 00 00|"; distance: 12; within: 4; rawbytes; ) 
 
 # check_byteF 
 # 
-# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "opcua packet with chunk type F"; content: "F"; offset: 3;depth: 1; )
+# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "opcua packet with chunk type F"; content: "F"; offset: 3; depth: 1; )
 
 # check_6securechannel 
 # 
@@ -65,16 +65,16 @@
 
 # detect_writerequest
 # 
-# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "WriteRequest by opcua client"; content: "|a1 02|"; offset: 26; depth: 28; rawbytes; )
+# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "WriteRequest by opcua client"; content: "|a1 02|"; offset: 26; depth: 2; rawbytes; )
 
 # detect_14request_6securechannel
 # 
-# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "channel 6 and id 14"; content: "|06 00 00 00|"; content: "|0e 00 00 00|"; distance: 8; within: 12; rawbytes; )
+# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "channel 6 and id 14"; content: "|06 00 00 00|"; content: "|0e 00 00 00|"; distance: 8; within: 4; rawbytes; )
 
 # detect_13token 
 # 
-# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "message with token_id = 13"; content: "|0d 00 00 00|"; offset: 9; depth: 13;  rawbytes; ) 
+# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "message with token_id = 13"; content: "|0d 00 00 00|"; offset: 9; depth: 4;  rawbytes; ) 
 
 # detect_createsession_endpointURI_opcuaserver
 # 
-# alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "CreateSession to opc.tcp://localhost:4840/freeopcua/server/"; content: "opc.tcp://localhost:4840/freeopcua/server/"; offset: 162; depth: 204; ) 
+alert tcp 127.0.0.1 any <> 127.0.0.1 4840 (msg: "CreateSession to opc.tcp://localhost:4840/freeopcua/server/"; content: "opc.tcp://localhost:4840/freeopcua/server/"; offset: 162; depth: 42; )
